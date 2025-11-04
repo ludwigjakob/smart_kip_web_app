@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperaturanzeige</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>🌡️ Temperatur</h1>
+  <p id="temp">Lade...</p>
+
+  <script>
+    async function fetchTemp() {
+      const res = await fetch('/temperature');
+      const data = await res.json();
+      document.getElementById('temp').innerText = `${data.temperature} °C`;
+    }
+    fetchTemp();
+    setInterval(fetchTemp, 5000);
+  </script>
+
+  <script src="/serviceworker.js"></script>
+  
+  <h1>🍃 Lüftersteuerung</h1>
+
+    <p>Aktueller Modus: <span id="mode-label">{{ mode }}</span></p>
+
+    <button class="mode-button {% if mode == 'auto' %}active{% endif %}" id="auto-btn" onclick="setMode('auto')">Automatik-Modus</button>
+    <button class="mode-button {% if mode == 'manual' %}active{% endif %}" id="manual-btn" onclick="setMode('manual')">Manueller Modus</button>
+
+    <script>
+        function setMode(mode) {
+            fetch('/set_mode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mode: mode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('mode-label').textContent = data.mode;
+                document.getElementById('auto-btn').classList.remove('active');
+                document.getElementById('manual-btn').classList.remove('active');
+                if (data.mode === 'auto') {
+                    document.getElementById('auto-btn').classList.add('active');
+                } else {
+                    document.getElementById('manual-btn').classList.add('active');
+                }
+                toggleSliderVisibility(data.mode); // <== NEU
+            });
+        }
+        function updateSliderLabel(value) {
+          document.getElementById('slider-value').textContent = `${value}%`;
+          // Optional: direkt senden
+          fetch('/set_fan_speed', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ speed: value })
+          });
+        }
+
+        function toggleSliderVisibility(mode) {
+            const slider = document.getElementById('slider-container');
+            slider.style.display = (mode === 'manual') ? 'block' : 'none';
+            if (mode === 'manual') {
+                const slider = document.getElementById('fan-slider');
+                slider.value = 0;
+                updateSliderLabel(0); // ← Übergibt den Wert an deine Funktion
+            }
+        }
+    </script>
+  <div id="slider-container" style="display: {% if mode == 'manual' %}block{% else %}none{% endif %}; margin-top: 20px;">
+    <label for="fan-slider">Lüftergeschwindigkeit:</label>
+    <input type="range" id="fan-slider" min="0" max="100" step="20" value="0" oninput="updateSliderLabel(this.value)">
+    <span id="slider-value">0%</span>
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const initialMode = "{{ mode }}";
+      toggleSliderVisibility(initialMode);
+    });
+  </script>
+</body>
+</html>
