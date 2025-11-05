@@ -1,20 +1,20 @@
 from flask import Flask, render_template, request, jsonify
 from tempsensor import read_temp
-from statemachine import load_mode, save_mode
+from mode_database import save_mode_to_db, load_latest_mode
 from debug import Debugger
 from data_connector.connector_manager import ConnectorManager
 from mode_database import init_db
 
 app = Flask(__name__)
 init_db()
-current_mode = load_mode()  # Modus beim Start laden
+current_mode = load_latest_mode()  # Modus beim Start laden
 debug = Debugger()
 connector_manager = ConnectorManager()
 
 
 @app.route('/')
 def index():
-    mode = load_mode()  # Immer aktuellen Modus aus DB holen
+    mode = load_latest_mode()  # Immer aktuellen Modus aus DB holen
     return render_template('index.html', mode=mode)
 
 @app.route('/temperature')
@@ -29,8 +29,8 @@ def set_mode():
     mode = data.get('mode')
     debug.log(f"Empfangener Modus: {mode}", label="Moduswechsel")
     if mode in ['auto', 'manual']:
-        save_mode(mode)
-        mode = load_mode()  # Direkt aus DB laden
+        save_mode_to_db(mode)
+        mode = load_latest_mode()  # Direkt aus DB laden
         return jsonify({'mode': mode})
     return jsonify({'error': 'Ungültiger Modus'}), 400
 
