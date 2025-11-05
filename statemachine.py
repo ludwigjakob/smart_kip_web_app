@@ -1,10 +1,8 @@
-def load_mode():
-    try:
-        with open('mode.txt', 'r') as f:
-            return f.read().strip()
-    except FileNotFoundError:
-        return 'auto'  # Standardmodus
+# statemachine.py
+from mode_database import save_mode_to_db, load_latest_mode
 
 def save_mode(mode):
-    with open('mode.txt', 'w') as f:
-        f.write(mode)
+    save_mode_to_db(mode)
+
+def load_mode():
+    return load_latest_mode()

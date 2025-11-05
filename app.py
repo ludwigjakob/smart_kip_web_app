@@ -3,15 +3,19 @@ from tempsensor import read_temp
 from statemachine import load_mode, save_mode
 from debug import Debugger
 from data_connector.connector_manager import ConnectorManager
+from mode_database import init_db
 
 app = Flask(__name__)
+init_db()
 current_mode = load_mode()  # Modus beim Start laden
 debug = Debugger()
 connector_manager = ConnectorManager()
 
+
 @app.route('/')
 def index():
-    return render_template('index.html', mode=current_mode)
+    mode = load_mode()  # Immer aktuellen Modus aus DB holen
+    return render_template('index.html', mode=mode)
 
 @app.route('/temperature')
 def temperature():
@@ -21,14 +25,14 @@ def temperature():
 
 @app.route('/set_mode', methods=['POST'])
 def set_mode():
-    global current_mode
     data = request.get_json()
     mode = data.get('mode')
     debug.log(f"Empfangener Modus: {mode}", label="Moduswechsel")
     if mode in ['auto', 'manual']:
-        current_mode = mode
-        save_mode(current_mode)  # Modus speichern
-    return jsonify({'mode': current_mode})
+        save_mode(mode)
+        mode = load_mode()  # Direkt aus DB laden
+        return jsonify({'mode': mode})
+    return jsonify({'error': 'Ungültiger Modus'}), 400
 
 @app.route('/set_fan_speed', methods=['POST'])
 def set_fan_speed():
