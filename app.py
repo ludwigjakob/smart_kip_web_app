@@ -2,10 +2,12 @@ from flask import Flask, render_template, request, jsonify
 from tempsensor import read_temp
 from statemachine import load_mode, save_mode
 from debug import Debugger
+from data_connector.connector_manager import ConnectorManager
 
 app = Flask(__name__)
 current_mode = load_mode()  # Modus beim Start laden
 debug = Debugger()
+connector_manager = ConnectorManager()
 
 @app.route('/')
 def index():
@@ -13,8 +15,9 @@ def index():
 
 @app.route('/temperature')
 def temperature():
-    temp = read_temp()
-    return jsonify({'temperature': temp})
+    #temp = read_temp()
+    value = connector_manager.get("temperature")
+    return jsonify({'temperature': value})
 
 @app.route('/set_mode', methods=['POST'])
 def set_mode():
