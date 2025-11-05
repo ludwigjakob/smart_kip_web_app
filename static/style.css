@@ -1,0 +1,38 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+  text-align: center;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #007aff;
+  margin-bottom: 1rem;
+}
+
+#temp {
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.mode-button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: 2px solid gray;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.mode-button.active {
+  border-color: red;
+}
