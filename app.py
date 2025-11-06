@@ -1,13 +1,8 @@
 from flask import Flask, render_template, request, jsonify
-from tempsensor import read_temp
-from mode_database import save_mode_to_db, load_latest_mode
 from debug import Debugger
 from data_connector.connector_manager import ConnectorManager
-from mode_database import init_db
 
 app = Flask(__name__)
-#init_db()
-current_mode = load_latest_mode()  # Modus beim Start laden
 debug = Debugger()
 connector_manager = ConnectorManager()
 
