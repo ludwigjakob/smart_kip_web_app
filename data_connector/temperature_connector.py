@@ -1,14 +1,28 @@
 from influxdb_client import InfluxDBClient
 from data_connector.base_connector import BaseConnector
 import os
+from dotenv import load_dotenv
+
+# .env-Datei laden, damit os.getenv() funktioniert
+load_dotenv()
 
 class TemperatureConnector(BaseConnector):
     def __init__(self, name="debo_temp_1", bucket="sensordata"):
         super().__init__(name, bucket)
+        
+        # Umgebungsvariablen laden
+        influx_url = os.getenv("INFLUX_URL")
+        influx_token = os.getenv("INFLUX_TOKEN")
+        influx_org = os.getenv("INFLUX_ORG")
+
+        # Optional: Debug-Ausgabe zur Kontrolle
+        if not all([influx_url, influx_token, influx_org]):
+            raise ValueError("Fehlende InfluxDB-Konfiguration in .env")
+
         self.client = InfluxDBClient(
-            url=os.getenv("INFLUX_URL"),
-            token=os.getenv("INFLUX_TOKEN"),
-            org=os.getenv("INFLUX_ORG")
+            url=influx_url,
+            token=influx_token,
+            org=influx_org
         )
 
     def read(self):
