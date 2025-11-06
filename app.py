@@ -6,7 +6,7 @@ from data_connector.connector_manager import ConnectorManager
 from mode_database import init_db
 
 app = Flask(__name__)
-init_db()
+#init_db()
 current_mode = load_latest_mode()  # Modus beim Start laden
 debug = Debugger()
 connector_manager = ConnectorManager()
@@ -14,7 +14,7 @@ connector_manager = ConnectorManager()
 
 @app.route('/')
 def index():
-    mode = load_latest_mode()  # Immer aktuellen Modus aus DB holen
+    mode = connector_manager.get("mode")  # Immer aktuellen Modus aus DB holen
     return render_template('index.html', mode=mode)
 
 @app.route('/temperature')
@@ -29,9 +29,9 @@ def set_mode():
     mode = data.get('mode')
     debug.log(f"Empfangener Modus: {mode}", label="Moduswechsel")
     if mode in ['auto', 'manual']:
-        save_mode_to_db(mode)
-        mode = load_latest_mode()  # Direkt aus DB laden
-        return jsonify({'mode': mode})
+        connector_manager.set("mode", mode)         # Modus speichern über Manager
+        current_mode = connector_manager.get("mode")  # Modus lesen über Manager
+        return jsonify({'mode': current_mode})
     return jsonify({'error': 'Ungültiger Modus'}), 400
 
 @app.route('/set_fan_speed', methods=['POST'])
