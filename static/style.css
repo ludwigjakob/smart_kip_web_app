@@ -36,3 +36,20 @@ h1 {
 .mode-button.active {
   border-color: red;
 }
+
+nav {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.nav-link {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #007aff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}

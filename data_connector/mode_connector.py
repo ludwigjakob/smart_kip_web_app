@@ -14,7 +14,6 @@ class ModeConnector(BaseConnector):
             'host': os.getenv('MARIADB_HOST'),
             'database': os.getenv('MARIADB_DBNAME')
         }
-        print("DB Config:", self.db_config)
 
         self.ensure_database_exists()
         self.init_db()  # Datenbank beim Erstellen initialisieren

@@ -12,6 +12,14 @@ def index():
     mode = connector_manager.get("mode")  # Immer aktuellen Modus aus DB holen
     return render_template('index.html', mode=mode)
 
+@app.route('/analysis')
+def analysis():
+    return render_template('analysis.html')
+
+@app.route('/config')
+def config():
+    return render_template('config.html')
+
 @app.route('/temperature')
 def temperature():
     #temp = read_temp()
