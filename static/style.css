@@ -38,18 +38,27 @@ h1 {
 }
 
 nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  border: 2px solid #007aff;
+  border-radius: 8px;
+  padding: 10px;
   margin-bottom: 2rem;
-  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .nav-link {
-  margin: 0 15px;
   text-decoration: none;
   color: #007aff;
   font-weight: bold;
   font-size: 1.1rem;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
 .nav-link:hover {
-  text-decoration: underline;
+  background-color: #e6f0ff;
 }
