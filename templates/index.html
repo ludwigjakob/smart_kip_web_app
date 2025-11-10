@@ -8,8 +8,15 @@
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <h1>🌡️ Temperatur</h1>
-  <p id="temp">Lade...</p>
+  <!-- Navigationsmenü -->
+  <nav>
+    <a href="/" class="nav-link {% if active_page == 'home' %}active{% endif %}">🏠 Start</a>
+    <a href="/analysis" class="nav-link {% if active_page == 'analysis' %}active{% endif %}">📊 Analyse</a>
+    <a href="/config" class="nav-link {% if active_page == 'config' %}active{% endif %}">⚙️ Config</a>
+  </nav>
+
+  <h1>🌡️ Temperature</h1>
+  <p id="temp">Load...</p>
 
   <script>
     async function fetchTemp() {
@@ -23,12 +30,12 @@
 
   <script src="/static/serviceworker.js"></script>
   
-  <h1>🍃 Lüftersteuerung</h1>
+  <h1>🍃 Fan Control</h1>
 
-    <p>Aktueller Modus: <span id="mode-label">{{ mode }}</span></p>
+    <p>Current Mode: <span id="mode-label">{{ mode }}</span></p>
 
-    <button class="mode-button {% if mode == 'auto' %}active{% endif %}" id="auto-btn" onclick="setMode('auto')">Automatik-Modus</button>
-    <button class="mode-button {% if mode == 'manual' %}active{% endif %}" id="manual-btn" onclick="setMode('manual')">Manueller Modus</button>
+    <button class="mode-button {% if mode == 'auto' %}active{% endif %}" id="auto-btn" onclick="setMode('auto')">Auto Mode</button>
+    <button class="mode-button {% if mode == 'manual' %}active{% endif %}" id="manual-btn" onclick="setMode('manual')">Manual Mode</button>
 
     <script>
         function setMode(mode) {
