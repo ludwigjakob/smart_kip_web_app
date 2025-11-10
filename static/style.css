@@ -62,3 +62,10 @@ nav {
 .nav-link:hover {
   background-color: #e6f0ff;
 }
+
+.nav-link.active {
+  border: 2px solid #007aff;
+  border-radius: 6px;
+  padding: 5px 10px;
+  background-color: #e6f0ff;
+}

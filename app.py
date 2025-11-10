@@ -10,15 +10,15 @@ connector_manager = ConnectorManager()
 @app.route('/')
 def index():
     mode = connector_manager.get("mode")  # Immer aktuellen Modus aus DB holen
-    return render_template('index.html', mode=mode)
+    return render_template('index.html', mode=mode, active_page='home')
 
 @app.route('/analysis')
 def analysis():
-    return render_template('analysis.html')
+    return render_template('analysis.html', active_page='analysis')
 
 @app.route('/config')
 def config():
-    return render_template('config.html')
+    return render_template('config.html', active_page='config')
 
 @app.route('/temperature')
 def temperature():
