@@ -69,3 +69,79 @@ nav {
   padding: 5px 10px;
   background-color: #e6f0ff;
 }
+
+.threshold-card {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 2px solid #007aff;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.toggle-button {
+  width: 100%;
+  background-color: #007aff;
+  color: white;
+  font-size: 1.1rem;
+  padding: 0.8rem;
+  border: none;
+  border-bottom: 1px solid #007aff;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-button:hover {
+  background-color: #005bb5;
+}
+
+.threshold-section {
+  display: none;
+  padding: 1rem;
+}
+
+.threshold-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.threshold-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.threshold-group label {
+  font-weight: bold;
+  color: #007aff;
+  font-size: 1rem;
+}
+
+.threshold-group input {
+  width: 80px;
+  padding: 0.4rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: right;
+}
+
+.save-button {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  font-size: 1rem;
+  background-color: #910000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #440000;
+}
