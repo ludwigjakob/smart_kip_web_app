@@ -22,8 +22,11 @@
         {% for level in [0, 20, 40, 60, 80] %}
           <div class="threshold-group">
             <label for="threshold_{{ level }}">🔧 {{ level }}% Threshold</label>
-            <input type="number" step="0.1" name="threshold_{{ level }}" id="threshold_{{ level }}"
-                  value="{{ thresholds.get(level, '') }}" required>
+            <select name="threshold_{{ level }}" id="threshold_{{ level }}">
+              {% for temp in range(15, 36) %}
+                <option value="{{ temp }}" {% if thresholds.get(level) == temp %}selected{% endif %}>{{ temp }}°C</option>
+              {% endfor %}
+            </select>
           </div>
         {% endfor %}
         <button type="submit" class="save-button">💾 Save</button>
