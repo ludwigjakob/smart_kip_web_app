@@ -1,11 +1,13 @@
 from data_connector.temperature_connector import TemperatureConnector
 from data_connector.mode_connector import ModeConnector
+from data_connector.threshold_connector import ThresholdConnector
 
 class ConnectorManager:
     def __init__(self):
         self.connectors = {
             "temperature": TemperatureConnector(),
-            "mode": ModeConnector()
+            "mode": ModeConnector(),
+            "threshold": ThresholdConnector()
         }
 
     def get(self, sensor_type: str):

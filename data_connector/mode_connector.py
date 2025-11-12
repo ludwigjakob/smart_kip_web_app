@@ -2,6 +2,7 @@ import os
 from data_connector.base_connector import BaseConnector
 from dotenv import load_dotenv
 import mysql.connector
+from data_connector.db_utils import ensure_database_exists
 
 load_dotenv()  # Lädt Umgebungsvariablen aus .env
 
@@ -15,19 +16,8 @@ class ModeConnector(BaseConnector):
             'database': os.getenv('MARIADB_DBNAME')
         }
 
-        self.ensure_database_exists()
+        ensure_database_exists(self.db_config)
         self.init_db()  # Datenbank beim Erstellen initialisieren
-
-    def ensure_database_exists(self):
-        """Stellt sicher, dass die Datenbank existiert, indem sie ggf. erstellt wird."""
-        conn = mysql.connector.connect(
-            user=self.db_config['user'],
-            password=self.db_config['password'],
-            host=self.db_config['host']
-        )
-        c = conn.cursor()
-        c.execute(f"CREATE DATABASE IF NOT EXISTS {self.db_config['database']}")
-        conn.close()
 
     def init_db(self):
         """Erstellt die Datenbanktabelle und initialisiert den Moduswert."""

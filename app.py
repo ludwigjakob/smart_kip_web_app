@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+
 from debug import Debugger
 from data_connector.connector_manager import ConnectorManager
 
@@ -16,9 +17,21 @@ def index():
 def analysis():
     return render_template('analysis.html', active_page='analysis')
 
-@app.route('/config')
+@app.route('/config', methods=["GET", "POST"])
 def config():
-    return render_template('config.html', active_page='config')
+    if request.method == "POST":
+        thresholds = {}
+        for level in [0, 20, 40, 60, 80]:
+            key = f"threshold_{level}"
+            value = request.form.get(key)
+            if value:
+                thresholds[level] = float(value)
+        connector_manager.set("threshold", thresholds)
+        #flash("Schwellenwerte gespeichert!", "success")
+        return redirect(url_for("config"))
+
+    current_thresholds = connector_manager.get("threshold") or {}
+    return render_template("config.html", active_page="config", thresholds=current_thresholds)
 
 @app.route('/temperature')
 def temperature():
