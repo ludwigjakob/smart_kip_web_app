@@ -27,11 +27,18 @@ def config():
             if value:
                 thresholds[level] = float(value)
         connector_manager.set("threshold", thresholds)
-        #flash("Schwellenwerte gespeichert!", "success")
+        
+        mode = request.form.get("mode_toggle") == "on"
+        interval_days = int(request.form.get("day_select", 1))
+        connector_manager.set("analysis", {"mode": mode, "interval_days": interval_days})
+
+
         return redirect(url_for("config"))
 
     current_thresholds = connector_manager.get("threshold") or {}
-    return render_template("config.html", active_page="config", thresholds=current_thresholds)
+    analysis = connector_manager.get("analysis") or {"mode": False, "interval_days": 1}
+
+    return render_template("config.html", active_page="config", thresholds=current_thresholds, analysis=analysis)
 
 @app.route('/temperature')
 def temperature():
