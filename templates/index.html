@@ -32,8 +32,7 @@
   
   <h1>🍃 Fan Control</h1>
 
-    <p>Current Mode: <span id="mode-label">{{ mode }}</span></p>
-
+    <span id="mode-label" style="display: none;">{{ mode }}</span>
     <button class="mode-button {% if mode == 'auto' %}active{% endif %}" id="auto-btn" onclick="setMode('auto')">Auto Mode</button>
     <button class="mode-button {% if mode == 'manual' %}active{% endif %}" id="manual-btn" onclick="setMode('manual')">Manual Mode</button>
 
@@ -59,14 +58,19 @@
                 toggleSliderVisibility(data.mode); // <== NEU
             });
         }
+        let debounceTimer;
+
         function updateSliderLabel(value) {
           document.getElementById('slider-value').textContent = `${value}%`;
-          // Optional: direkt senden
-          fetch('/set_fan_speed', {
+
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            fetch('/set_fan_speed', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ speed: value })
-          });
+            });
+          }, 2000); // 2 Sekunden Pause
         }
 
         function toggleSliderVisibility(mode) {
@@ -80,9 +84,11 @@
         }
     </script>
   <div id="slider-container" style="display: {% if mode == 'manual' %}block{% else %}none{% endif %}; margin-top: 20px;">
-    <label for="fan-slider">Lüftergeschwindigkeit:</label>
+    <div class="slider-label-group">
+      <label for="fan-slider">Fan Level:</label>
+      <span id="slider-value">0%</span>
+    </div>
     <input type="range" id="fan-slider" min="0" max="100" step="20" value="0" oninput="updateSliderLabel(this.value)">
-    <span id="slider-value">0%</span>
   </div>
   <script>
     window.addEventListener('DOMContentLoaded', () => {

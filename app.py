@@ -54,15 +54,22 @@ def set_mode():
     if mode in ['auto', 'manual']:
         connector_manager.set("mode", mode)         # Modus speichern über Manager
         current_mode = connector_manager.get("mode")  # Modus lesen über Manager
+
+        # Wenn Automatikmodus aktiviert wurde → Lüftergeschwindigkeit auf 0 setzen
+        if current_mode == "auto":
+            connector_manager.connectors["mode"].write_fan_speed(0)
+            debug.log("Fan speed auf 0 gesetzt wegen Automatikmodus", label="Moduswechsel")
+
         return jsonify({'mode': current_mode})
     return jsonify({'error': 'Ungültiger Modus'}), 400
 
 @app.route('/set_fan_speed', methods=['POST'])
 def set_fan_speed():
     data = request.get_json()
-    speed = data.get('speed')
+    speed = data.get('speed', 0)
     debug.log(f"Lüftergeschwindigkeit gesetzt: {speed}%", label="Lüftersteuerung")
-    # Hier könntest du GPIO/PWM ansteuern
+    connector_manager.connectors["mode"].write_fan_speed(speed)
+
     return jsonify({'status': 'ok', 'speed': speed})
 
 
