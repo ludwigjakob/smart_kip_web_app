@@ -3,6 +3,10 @@ from data_connector.base_connector import BaseConnector
 from dotenv import load_dotenv
 import mysql.connector
 from data_connector.db_utils import ensure_database_exists
+import threading
+import time
+
+
 
 load_dotenv()  # Lädt Umgebungsvariablen aus .env
 
@@ -29,6 +33,7 @@ class ModeConnector(BaseConnector):
             CREATE TABLE IF NOT EXISTS mode (
                 id INT PRIMARY KEY,
                 value VARCHAR(255) NOT NULL,
+                fan_speed INT DEFAULT 0,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
@@ -57,3 +62,16 @@ class ModeConnector(BaseConnector):
         c.execute("UPDATE mode SET value = %s, timestamp = CURRENT_TIMESTAMP WHERE id = 1", (mode,))
         conn.commit()
         conn.close()
+
+    def write_fan_speed(self, speed: int):
+        """Speichert die Lüftergeschwindigkeit verzögert in der Datenbank."""
+        def delayed_write():
+            time.sleep(2)
+            conn = mysql.connector.connect(**self.db_config)
+            c = conn.cursor()
+            c.execute("UPDATE mode SET fan_speed = %s, timestamp = CURRENT_TIMESTAMP WHERE id = 1", (speed,))
+            conn.commit()
+            conn.close()
+
+        threading.Thread(target=delayed_write).start()
+

@@ -60,9 +60,10 @@ def set_mode():
 @app.route('/set_fan_speed', methods=['POST'])
 def set_fan_speed():
     data = request.get_json()
-    speed = data.get('speed')
+    speed = data.get('speed', 0)
     debug.log(f"Lüftergeschwindigkeit gesetzt: {speed}%", label="Lüftersteuerung")
-    # Hier könntest du GPIO/PWM ansteuern
+    connector_manager.connectors["mode"].write_fan_speed(speed)
+
     return jsonify({'status': 'ok', 'speed': speed})
 
 
