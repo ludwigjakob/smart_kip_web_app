@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+
 from debug import Debugger
 from data_connector.connector_manager import ConnectorManager
 
@@ -16,9 +17,28 @@ def index():
 def analysis():
     return render_template('analysis.html', active_page='analysis')
 
-@app.route('/config')
+@app.route('/config', methods=["GET", "POST"])
 def config():
-    return render_template('config.html', active_page='config')
+    if request.method == "POST":
+        thresholds = {}
+        for level in [0, 20, 40, 60, 80]:
+            key = f"threshold_{level}"
+            value = request.form.get(key)
+            if value:
+                thresholds[level] = float(value)
+        connector_manager.set("threshold", thresholds)
+        
+        mode = request.form.get("mode_toggle") == "on"
+        interval_days = int(request.form.get("day_select", 1))
+        connector_manager.set("analysis", {"mode": mode, "interval_days": interval_days})
+
+
+        return redirect(url_for("config"))
+
+    current_thresholds = connector_manager.get("threshold") or {}
+    analysis = connector_manager.get("analysis") or {"mode": False, "interval_days": 1}
+
+    return render_template("config.html", active_page="config", thresholds=current_thresholds, analysis=analysis)
 
 @app.route('/temperature')
 def temperature():

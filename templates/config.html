@@ -14,7 +14,61 @@
     <a href="/analysis" class="nav-link {% if active_page == 'analysis' %}active{% endif %}">📊 Analyse</a>
     <a href="/config" class="nav-link {% if active_page == 'config' %}active{% endif %}">⚙️ Config</a>
   </nav>
-  <h1>⚙️ Konfiguration</h1>
-  <p>Hier kannst du Schwellenwerte uvm.</p>
+  <div class="threshold-card">
+    <button type="button" class="toggle-button" onclick="toggleThresholds()">🌡️ Edit Thresholds</button>
+    <div id="threshold-section" class="threshold-section">
+      <form method="POST" action="/config" class="threshold-form">
+        {% for level in [0, 20, 40, 60, 80] %}
+          <div class="threshold-group">
+            <label for="threshold_{{ level }}">🔧 {{ level }}% Threshold</label>
+            <select name="threshold_{{ level }}" id="threshold_{{ level }}">
+              {% for temp in range(15, 36) %}
+                <option value="{{ temp }}" {% if thresholds.get(level) == temp %}selected{% endif %}>{{ temp }}°C</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
+        <button type="submit" class="save-button">💾 Save</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function toggleThresholds() {
+    const section = document.getElementById('threshold-section');
+    const isHidden = window.getComputedStyle(section).display === 'none';
+    section.style.display = isHidden ? 'block' : 'none';
+  }
+  </script>
+  <div class="analysis-settings-card">
+  <button type="button" class="toggle-button" onclick="toggleAnalysisSettings()">📈 Analyse Settings</button>
+  <div id="analysis-settings-section" class="analysis-settings-section">
+    <form method="POST" action="/config" class="analysis-settings-form">
+      <div class="analysis-settings-group">
+        <label for="mode-toggle">🔌 Activated</label>
+        <label class="slider-switch">
+          <input type="checkbox" name="mode_toggle" id="mode-toggle" {% if analysis.mode %}checked{% endif %}>
+          <span class="slider-round"></span>
+        </label>
+      </div>
+      <div class="analysis-settings-group">
+        <label for="day-select">📅 Interval (Days)</label>
+        <select name="day_select" id="day-select">
+          {% for day in range(1, 8) %}
+            <option value="{{ day }}" {% if analysis.interval_days == day %}selected{% endif %}>{{ day }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="save-button">💾 Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleAnalysisSettings() {
+      const section = document.getElementById('analysis-settings-section');
+      const isHidden = window.getComputedStyle(section).display === 'none';
+      section.style.display = isHidden ? 'block' : 'none';
+    }
+  </script>
 </body>
 </html>
