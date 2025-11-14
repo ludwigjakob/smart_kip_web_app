@@ -32,8 +32,7 @@
   
   <h1>🍃 Fan Control</h1>
 
-    <p>Current Mode: <span id="mode-label">{{ mode }}</span></p>
-
+    <span id="mode-label" style="display: none;">{{ mode }}</span>
     <button class="mode-button {% if mode == 'auto' %}active{% endif %}" id="auto-btn" onclick="setMode('auto')">Auto Mode</button>
     <button class="mode-button {% if mode == 'manual' %}active{% endif %}" id="manual-btn" onclick="setMode('manual')">Manual Mode</button>
 
