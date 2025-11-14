@@ -85,9 +85,11 @@
         }
     </script>
   <div id="slider-container" style="display: {% if mode == 'manual' %}block{% else %}none{% endif %}; margin-top: 20px;">
-    <label for="fan-slider">Lüftergeschwindigkeit:</label>
+    <div class="slider-label-group">
+      <label for="fan-slider">Fan Level:</label>
+      <span id="slider-value">0%</span>
+    </div>
     <input type="range" id="fan-slider" min="0" max="100" step="20" value="0" oninput="updateSliderLabel(this.value)">
-    <span id="slider-value">0%</span>
   </div>
   <script>
     window.addEventListener('DOMContentLoaded', () => {

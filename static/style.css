@@ -231,3 +231,59 @@ nav {
 .slider-switch input:checked + .slider-round:before {
   transform: translateX(24px);
 }
+
+#fan-slider {
+  width: 80%;
+  max-width: 400px;
+  height: 30px;
+  appearance: none;
+  background: #007aff;
+  border-radius: 10px;
+  outline: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Griff (Thumb) für WebKit-Browser */
+#fan-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 2px solid #007aff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Griff für Firefox */
+#fan-slider::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border: 2px solid #007aff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.slider-label-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007aff;
+  margin-bottom: 10px;
+}
+
+#slider-value {
+  background-color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-size: 1.2rem;
+  min-width: 60px;
+  text-align: center;
+}
