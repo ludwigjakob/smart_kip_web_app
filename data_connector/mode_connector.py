@@ -66,7 +66,7 @@ class ModeConnector(BaseConnector):
     def write_fan_speed(self, speed: int):
         """Speichert die Lüftergeschwindigkeit verzögert in der Datenbank."""
         def delayed_write():
-            time.sleep(2)
+            time.sleep(1)
             conn = mysql.connector.connect(**self.db_config)
             c = conn.cursor()
             c.execute("UPDATE mode SET fan_speed = %s, timestamp = CURRENT_TIMESTAMP WHERE id = 1", (speed,))

@@ -59,14 +59,19 @@
                 toggleSliderVisibility(data.mode); // <== NEU
             });
         }
+        let debounceTimer;
+
         function updateSliderLabel(value) {
           document.getElementById('slider-value').textContent = `${value}%`;
-          // Optional: direkt senden
-          fetch('/set_fan_speed', {
+
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            fetch('/set_fan_speed', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ speed: value })
-          });
+            });
+          }, 2000); // 2 Sekunden Pause
         }
 
         function toggleSliderVisibility(mode) {
