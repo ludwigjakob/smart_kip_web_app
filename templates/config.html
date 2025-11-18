@@ -18,7 +18,7 @@
     <button type="button" class="toggle-button" onclick="toggleThresholds()">🌡️ Edit Thresholds</button>
     <div id="threshold-section" class="threshold-section">
       <form method="POST" action="/config" class="threshold-form">
-        {% for level in [0, 20, 40, 60, 80] %}
+        {% for level in levels %}
           <div class="threshold-group">
             <label for="threshold_{{ level }}">🔧 {{ level }}% Threshold</label>
             <select name="threshold_{{ level }}" id="threshold_{{ level }}">
