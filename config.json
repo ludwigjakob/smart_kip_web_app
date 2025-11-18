@@ -1,3 +1,17 @@
 {
-  "mode": "debug"
+  "mode": "debug",
+  "actors": {
+    "fans": [
+      {
+        "id": "fan1",
+        "type": "digital",
+        "in1": 16
+      },
+      {
+        "id": "fan2",
+        "type": "digital",
+        "in1": 26
+      }
+    ]
+  }
 }

@@ -21,7 +21,7 @@ def analysis():
 def config():
     if request.method == "POST":
         thresholds = {}
-        for level in [0, 20, 40, 60, 80]:
+        for level in [0, 20, 40, 60, 80, 100]:
             key = f"threshold_{level}"
             value = request.form.get(key)
             if value:
