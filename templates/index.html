@@ -70,7 +70,7 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ speed: value })
             });
-          }, 2000); // 2 Sekunden Pause
+          }, 1500); // 2 Sekunden Pause
         }
 
         function toggleSliderVisibility(mode) {
@@ -88,7 +88,7 @@
       <label for="fan-slider">Fan Level:</label>
       <span id="slider-value">0%</span>
     </div>
-    <input type="range" id="fan-slider" min="0" max="100" step="20" value="0" oninput="updateSliderLabel(this.value)">
+    <input type="range" id="fan-slider" min="0" max="100" step="{% if fan_type == 'digital' %}100{% else %}20{% endif %}"  value="0" oninput="updateSliderLabel(this.value)">
   </div>
   <script>
     window.addEventListener('DOMContentLoaded', () => {

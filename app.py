@@ -11,7 +11,9 @@ config_manager = ConfigManager("config.json")
 @app.route('/')
 def index():
     mode = connector_manager.get("mode")  # Immer aktuellen Modus aus DB holen
-    return render_template('index.html', mode=mode, active_page='home')
+    fan_type = config_manager.get_fan_type()  # Fan-Typ aus Config
+
+    return render_template('index.html', mode=mode, fan_type=fan_type, active_page='home')
 
 @app.route('/analysis')
 def analysis():
