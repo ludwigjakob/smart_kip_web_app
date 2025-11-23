@@ -55,7 +55,7 @@
                 } else {
                     document.getElementById('manual-btn').classList.add('active');
                 }
-                toggleSliderVisibility(data.mode); // <== NEU
+                toggleSliderVisibility(data.mode, data.fan_speed); // <== NEU
             });
         }
         let debounceTimer;
@@ -74,21 +74,28 @@
         }
 
         function toggleSliderVisibility(mode) {
-            const slider = document.getElementById('slider-container');
-            slider.style.display = (mode === 'manual') ? 'block' : 'none';
+            const sliderContainer = document.getElementById('slider-container');
+            sliderContainer.style.display = (mode === 'manual') ? 'block' : 'none';
             if (mode === 'manual') {
                 const slider = document.getElementById('fan-slider');
-                slider.value = 0;
-                updateSliderLabel(0); // ← Übergibt den Wert an deine Funktion
+                const currentValue = slider.value; // schon aus Template gesetzt
+                updateSliderLabel(currentValue);
+            } else {
+              // Im Auto-Modus: Anzeige auf 0 setzen
+              updateSliderLabel(0);
+
             }
         }
     </script>
   <div id="slider-container" style="display: {% if mode == 'manual' %}block{% else %}none{% endif %}; margin-top: 20px;">
     <div class="slider-label-group">
       <label for="fan-slider">Fan Level:</label>
-      <span id="slider-value">0%</span>
+      <span id="slider-value">{{ fan_speed }}%</span>
     </div>
-    <input type="range" id="fan-slider" min="0" max="100" step="{% if fan_type == 'digital' %}100{% else %}20{% endif %}"  value="0" oninput="updateSliderLabel(this.value)">
+    <input type="range" id="fan-slider" min="0" max="100"
+       step="{% if fan_type == 'digital' %}100{% else %}20{% endif %}"
+       value="{{ fan_speed }}"
+       oninput="updateSliderLabel(this.value)">
   </div>
   <script>
     window.addEventListener('DOMContentLoaded', () => {

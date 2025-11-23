@@ -46,14 +46,16 @@ class ModeConnector(BaseConnector):
         conn.commit()
         conn.close()
 
-    def read(self) -> str:
-        """Lädt den aktuellen Moduswert aus der Datenbank."""
+    def read(self) -> dict:
+        """Lädt den aktuellen Modus und die Lüftergeschwindigkeit aus der Datenbank."""
         conn = mysql.connector.connect(**self.db_config)
         c = conn.cursor()
-        c.execute("SELECT value FROM mode WHERE id = 1")
+        c.execute("SELECT value, fan_speed FROM mode WHERE id = 1")
         result = c.fetchone()
         conn.close()
-        return result[0] if result else "auto"
+        if result:
+            return {"mode": result[0], "fan_speed": result[1]}
+        return {"mode": "auto", "fan_speed": 0}
 
     def write(self, mode: str):
         """Speichert einen neuen Moduswert in der Datenbank."""

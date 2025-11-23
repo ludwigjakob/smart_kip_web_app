@@ -10,10 +10,15 @@ config_manager = ConfigManager("config.json")
 
 @app.route('/')
 def index():
-    mode = connector_manager.get("mode")  # Immer aktuellen Modus aus DB holen
-    fan_type = config_manager.get_fan_type()  # Fan-Typ aus Config
-
-    return render_template('index.html', mode=mode, fan_type=fan_type, active_page='home')
+    mode_data = connector_manager.get("mode")  # liefert dict {"mode":..., "fan_speed":...}
+    fan_type = config_manager.get_fan_type()
+    return render_template(
+        'index.html',
+        mode=mode_data["mode"],
+        fan_speed=mode_data["fan_speed"],
+        fan_type=fan_type,
+        active_page='home'
+    )
 
 @app.route('/analysis')
 def analysis():
@@ -57,14 +62,14 @@ def set_mode():
     debug.log(f"Empfangener Modus: {mode}", label="Moduswechsel")
     if mode in ['auto', 'manual']:
         connector_manager.set("mode", mode)         # Modus speichern über Manager
-        current_mode = connector_manager.get("mode")  # Modus lesen über Manager
+        mode_data = connector_manager.get("mode")  # dict mit {"mode":..., "fan_speed":...}
 
         # Wenn Automatikmodus aktiviert wurde → Lüftergeschwindigkeit auf 0 setzen
-        if current_mode == "auto":
+        if mode_data["mode"] == "auto":
             connector_manager.connectors["mode"].write_fan_speed(0)
             debug.log("Fan speed auf 0 gesetzt wegen Automatikmodus", label="Moduswechsel")
 
-        return jsonify({'mode': current_mode})
+        return jsonify(mode_data)
     return jsonify({'error': 'Ungültiger Modus'}), 400
 
 @app.route('/set_fan_speed', methods=['POST'])
