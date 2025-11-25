@@ -12,6 +12,13 @@
         "type": "digital",
         "in1": 26
       }
+    ],
+    "sockets": [
+      {
+        "id": "socket1",
+        "type": "tapo_p100",
+        "host": "192.168.1.100"
+      }
     ]
   }
 }
