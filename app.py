@@ -12,11 +12,17 @@ config_manager = ConfigManager("config.json")
 def index():
     mode_data = connector_manager.get("mode")  # liefert dict {"mode":..., "fan_speed":...}
     fan_type = config_manager.get_fan_type()
+    sockets = config_manager.get_sockets()
+    socket_data = connector_manager.get("socket") if sockets else None
+
+
     return render_template(
         'index.html',
         mode=mode_data["mode"],
         fan_speed=mode_data["fan_speed"],
         fan_type=fan_type,
+        socket_state=socket_data["state"] if socket_data else None,
+        sockets=sockets,
         active_page='home'
     )
 
@@ -80,6 +86,32 @@ def set_fan_speed():
     connector_manager.connectors["mode"].write_fan_speed(speed)
 
     return jsonify({'status': 'ok', 'speed': speed})
+
+@app.route("/sockets")
+def get_sockets():
+    sockets = config_manager.get_sockets()
+    return jsonify(sockets)
+
+
+@app.route("/socket_status")
+def socket_status():
+    """Liefert aktuellen Zustand der Socket aus DB."""
+    socket_data = connector_manager.get("socket")
+    return jsonify(socket_data)
+
+@app.route("/toggle_socket", methods=["POST"])
+def toggle_socket():
+    """Schreibt neuen Zustand in DB."""
+    data = request.get_json()
+    state = data.get("state")  # "on" oder "off"
+    debug.log(f"Socket gesetzt: {state}", label="Socketsteuerung")
+
+    connector_manager.set("socket", state)
+    socket_data = connector_manager.get("socket")
+    return jsonify(socket_data)
+
+
+    
 
 
 if __name__ == '__main__':

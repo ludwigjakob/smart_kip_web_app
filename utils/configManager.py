@@ -40,4 +40,13 @@ class ConfigManager:
             debug.log(f"Unbekannter Fan-Typ: {fan_type}", label="Config Error")
             sys.exit(1)
 
+    def get_sockets(self):
+        """Liest die Sockets aus der Config"""
+        sockets = self._config.get("actors", {}).get("sockets", [])
+        if not sockets:
+            debug.log("Keine Socket in der Config gefunden", label="Config")
+            return []
+        debug.log(f"Socket erkannt: {[s['id'] for s in sockets]}", label="Config")
+        return sockets
+
 

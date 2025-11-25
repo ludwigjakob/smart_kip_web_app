@@ -103,5 +103,38 @@
       toggleSliderVisibility(initialMode);
     });
   </script>
+  
+  <!-- Socket Control -->
+  {% if sockets %}
+    <h1>🔌 Socket Control</h1>
+    <span id="socket-label" style="display: none;">{{ socket_state }}</span>
+    <button class="mode-button {% if socket_state == 'on' %}active{% endif %}" id="socket-on-btn" onclick="toggleSocket('on')">On</button>
+    <button class="mode-button {% if socket_state == 'off' %}active{% endif %}" id="socket-off-btn" onclick="toggleSocket('off')">Off</button>
+
+    <script>
+      function toggleSocket(state) {
+        fetch('/toggle_socket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ state: state })
+        })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('socket-label').textContent = data.state;
+          document.getElementById('socket-on-btn').classList.remove('active');
+          document.getElementById('socket-off-btn').classList.remove('active');
+          if (data.state === 'on') {
+            document.getElementById('socket-on-btn').classList.add('active');
+          } else {
+            document.getElementById('socket-off-btn').classList.add('active');
+          }
+          console.log("Socket gesetzt:", data.state);
+        });
+      }
+    </script>
+
+  {% endif %}
+
+
 </body>
 </html>
