@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
-from utils.configManager import ConfigManager
-from debug import Debugger
-from data_connector.connector_manager import ConnectorManager
+from common.utils.configManager import ConfigManager
+from common.utils.debug import Debugger
+from common.data_connector.connector_manager import ConnectorManager
 
 app = Flask(__name__)
 debug = Debugger()
