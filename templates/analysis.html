@@ -14,17 +14,17 @@
     <a href="/analysis" class="nav-link {% if active_page == 'analysis' %}active{% endif %}">📊 Analysis</a>
     <a href="/config" class="nav-link {% if active_page == 'config' %}active{% endif %}">⚙️ Config</a>
   </nav>
-  <h1>📊 Analyse</h1>
-  <p>Hier kannst du Temperaturverläufe uvm.</p>
+  <h1>📊 Analysis</h1>
+  <p>Soon coming: Temperature diagrams</p>
   <!-- Button zum Starten der Analyse -->
   <form action="{{ url_for('run_analysis') }}" method="post">
-    <button type="submit" class="mode-button">Analyse starten</button>
+    <button type="submit" class="analysis-button">Start Analysis</button>
   </form>
 
   <!-- Statusfeld -->
-  <div id="status-box">
-    <h3>Last analysis:</h3>
-    <p id="status-text">Wird geladen...</p>
+  <div class="status-card">
+    <h3>Last run analysis:</h3>
+    <p id="status-text">Loading...</p>
   </div>
 
   <script>

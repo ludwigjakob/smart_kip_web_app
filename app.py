@@ -130,13 +130,11 @@ def run_analysis():
 @app.route('/status_analysis')
 def status_analysis():
     try:
-        # GET an die Analyse-App schicken
         r = requests.get(f"{ANALYSIS_URL}/status")
         return r.json()
     except Exception as e:
-        return {"status": f"Fehler: {e}"}
-
-    
+        debug.log(f"Fehler beim Abrufen des Status: {e}", label="analysis")
+        return {"last_run": "Fehler"}
 
 
 if __name__ == '__main__':
