@@ -2,3 +2,5 @@ flask
 influxdb-client
 python-dotenv
 mysql-connector-python
+pandas
+requests
