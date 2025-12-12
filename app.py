@@ -2,11 +2,14 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 from common.utils.configManager import ConfigManager
 from common.utils.debug import Debugger
 from common.data_connector.connector_manager import ConnectorManager
+import requests
 
 app = Flask(__name__)
 debug = Debugger()
 connector_manager = ConnectorManager()
 config_manager = ConfigManager("config.json")
+ANALYSIS_URL = "http://localhost:6000"
+
 
 @app.route('/')
 def index():
@@ -110,6 +113,28 @@ def toggle_socket():
     socket_data = connector_manager.get("socket")
     return jsonify(socket_data)
 
+@app.route('/run_analysis', methods=["POST"])
+def run_analysis():
+    try:
+        # POST an die Analyse-App schicken
+        r = requests.post(f"{ANALYSIS_URL}/run")
+        if r.status_code == 200:
+            debug.log(f"Analysis successfully started", label="analysis")
+        else:
+            debug.log(f"Fehler beim Starten: {r.text}", label="analysis")
+    except Exception as e:
+        debug.log(f"Fehler beim Verbinden zur Analyse-App: {e}", label="analysis")
+    return redirect(url_for('analysis'))
+
+
+@app.route('/status_analysis')
+def status_analysis():
+    try:
+        # GET an die Analyse-App schicken
+        r = requests.get(f"{ANALYSIS_URL}/status")
+        return r.json()
+    except Exception as e:
+        return {"status": f"Fehler: {e}"}
 
     
 

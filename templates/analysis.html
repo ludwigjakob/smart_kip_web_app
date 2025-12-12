@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analyse</title>
+  <title>Analysis</title>
   <link rel="manifest" href="/static/manifest.json">
   <link rel="stylesheet" href="/static/style.css">
 </head>
@@ -11,10 +11,36 @@
   <!-- Navigationsmenü -->
   <nav>
     <a href="/" class="nav-link {% if active_page == 'home' %}active{% endif %}">🏠 Start</a>
-    <a href="/analysis" class="nav-link {% if active_page == 'analysis' %}active{% endif %}">📊 Analyse</a>
+    <a href="/analysis" class="nav-link {% if active_page == 'analysis' %}active{% endif %}">📊 Analysis</a>
     <a href="/config" class="nav-link {% if active_page == 'config' %}active{% endif %}">⚙️ Config</a>
   </nav>
   <h1>📊 Analyse</h1>
   <p>Hier kannst du Temperaturverläufe uvm.</p>
+  <!-- Button zum Starten der Analyse -->
+  <form action="{{ url_for('run_analysis') }}" method="post">
+    <button type="submit" class="mode-button">Analyse starten</button>
+  </form>
+
+  <!-- Statusfeld -->
+  <div id="status-box">
+    <h3>Last analysis:</h3>
+    <p id="status-text">Wird geladen...</p>
+  </div>
+
+  <script>
+  async function updateStatus() {
+    try {
+      const response = await fetch("/status_analysis");  // deine Web-App ruft Analyse-App durch
+      const data = await response.json();
+      document.getElementById("status-text").textContent = data.last_run;
+    } catch (err) {
+      document.getElementById("status-text").textContent = "Fehler beim Abrufen des Status";
+    }
+  }
+  setInterval(updateStatus, 2000);
+  updateStatus();
+  </script>
+
+
 </body>
 </html>
