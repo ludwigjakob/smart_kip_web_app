@@ -15,3 +15,16 @@ A Flask-based web interface for controlling the caravan refrigerator fan and sma
 ## Start the app with Docker
 ```bash
 ./start.sh
+```
+
+## License
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+
+### Third-Party Licenses
+This project uses third-party libraries under the following licenses:
+- Flask (BSD-3-Clause)
+- influxdb-client (MIT)
+- python-dotenv (BSD-3-Clause)
+- mysql-connector-python (GPL-2.0 with FOSS Exception)
+- pandas (BSD-3-Clause)
+- requests (Apache-2.0)
