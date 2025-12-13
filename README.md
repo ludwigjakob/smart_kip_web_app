@@ -10,7 +10,7 @@ A Flask-based web interface for controlling the caravan refrigerator fan and sma
 - Trigger analysis jobs from `smart_kip_analyze_data`
 
 ## Screenshot of Start Page
-![WhatsApp Image 2025-12-13 at 17 54 27](https://github.com/user-attachments/assets/3007ea96-e24e-48ec-85d9-a4151805231c)
+<img src="https://github.com/user-attachments/assets/3007ea96-e24e-48ec-85d9-a4151805231c" alt="Start Page Screenshot" width="400">
 
 ## Start the app with Docker
 ```bash
