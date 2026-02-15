@@ -134,7 +134,16 @@
     </script>
 
   {% endif %}
+  
+  <!-- SHUTDOWN BUTTON -->
+  <div id="shutdown-footer" style="margin-top: 40px; text-align: center;">
+    <button onclick="openShutdownConfirm()" class="mode-button" style="background-color: #b33; color: white;">
+      Shut Down Raspberry Pi
+    </button>
+  </div>
 
+  <!-- CENTRAL SHUTDOWN LOGIC -->
+  <script src="/static/shutdown.js"></script>
 
 </body>
 </html>
